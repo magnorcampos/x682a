@@ -39,19 +39,19 @@
  
  		bank1								                                                   ; Select Bank1
  		movlw	B'00000011'					                                          ; Literal config and set Work register
- 		movwf	TRISA						                                               ; Address Literal TRISA and set bit _A01 and _A02
+ 		movwf	TRISA						                                               ; Address Literal TRISA and set bit _A0 and _A1
  		
  		movlw	B'00000000'					
  		movwf   TRISB						
  
  		bank0								                                                   ; Select Bank0
 
- 		movlw	B'00000011'					; Configura o Literal e move para o registrador Work
- 		movwf   PORTB						; Carrega o Literal no PortB
+ 		movlw	B'00000011'					                                          ; Config Literal and set register W
+ 		movwf   PORTB					                                             	; Move literal to PORTB and set bit _RB0 and _RB1
  		
- 		goto looping
+ 		goto looping                                                    ; goto to looping
  
- ;Inicio do Looping do programa
+ ;Looping
  looping:
  
  	   movlw	B'00000001'
@@ -83,15 +83,15 @@
  	goto looping
  	
 ;--------------------------------------------------------------------------- 
-; Bloco do comando de Delay	
+; Delay	
 delay_1: 	
- 	movlw D'255'           ; Valor inicial do contador
-    movwf COUNT            ; Move para um registrador de contagem
+ 	movlw D'255'             ; Confi literal 
+    movwf COUNT            ; Move litral to Count register
     
-delay_1_loop:
-    decfsz COUNT, F        ; Decrementa o contador e salta se zero
-    goto delay_1_loop      ; Repete o loop se o contador não atingiu zero
-    return                 ; Retorna ao código principal
+delay_1_loop:              ; Create looping
+    decfsz COUNT, F        ; Decrease COUNT and skip if result is zero
+    goto delay_1_loop      ; If resulto isn't zero. So go to "delay_1_loop"
+    return                 ; Return to code
 ;---------------------------------------------------------------------------
  
  
