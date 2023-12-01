@@ -3,47 +3,49 @@
 ; For practice assebly language
 ; microcontroller
 
- #include <p16f628a.inc>
+ #include <p16f628a.inc>                                         ;add the lib of microcontroller
  
- ; Configurando os Fuses
- __config _XT_OSC & _WDT_OFF & _PWRTE_ON & _CP_OFF 	
+ ; Config Fuses
+ __config _XT_OSC & _WDT_OFF & _PWRTE_ON & _CP_OFF 	           
  
- ; Declarando a variavel
- COUNT equ 0x20 ; Substitua 0x20 pelo endereço de memória desejado para COUNT
+ ; Declaring variables
+ COUNT equ 0x20                                                  ; Create variable COUNT in address of memory 0x20  
 
  
- ; Criando o Mapa de memória
- #define    bank0   bcf STATUS,RP0          ; Seleciono o Banco_0
- #define    bank1   bsf STATUS,RP0			; Seleciono o Banco_1
+ ; Memory MAP
+ #define    bank0   bcf STATUS,RP0                                ; clear bit RP0, select BANK0
+ #define    bank1   bsf STATUS,RP0			                             ; set bit RP0, select BANK1
  
  
- ; Configurando as Entradas
- #define botao_1   PORTB,RB0                ; Botão_1 esta no PORT_B e no bit RB0
+ ; Inputs config
+ #define button_1   PORTB,RB0                                     ; button_1, PORT_B and bit 0
+ #define button_2   PORTB,RB1                                     ; button_2, PORT_B and bit 1
  
  
- ; Configurando as Saidas
- #define led       PORTA,RA0				; Led esta no PORT_A e no bit RA0
+ ; Outputs config
+ #define led       PORTA,RA0			                                  	; led, PORT_A and bit 0
+ #defien buzzer    PORTA,RA1                                      ; buzzer, PORT_A and bit 1
  
- ; Configurando o vetor de Reset
- 		org		   H'0000'					; Origem de endereço da memória, pois este end H'0000' é o endereço de Reset
- 		goto       inicio					; Desvia o vetor de interrupção
+ ; Reset config
+ 		org		   H'0000'					                                           ; Reset Address H'0000' 
+ 		goto       inicio					                                         ; Vector Interruption
  		
- ; Configurando o vetor de Interrupção
- 		org		   H'0004'					; Todas as interrupções apontam para este endereço 
- 		retfie     							; Retorno da interrupção		
+ ; Interruption config
+ 		org		   H'0004'					                                           ; Interruption Address H'0004' 
+ 		retfie     							                                             ; Return of interruption		
  
- ; Programa Principal
+ ; Main
  inicio:
  
- 		bank1								; Seleciona o banco 1 de memória
- 		movlw	B'00000011'					; Configura o Literal
- 		movwf	TRISA						; Move o literal para o reg TRISA, setando RA0 como entrada
+ 		bank1								                                                   ; Select Bank1
+ 		movlw	B'00000011'					                                          ; Literal config and set Work register
+ 		movwf	TRISA						                                               ; Address Literal TRISA and set bit _A01 and _A02
  		
- 		movlw	B'00000000'					; Configura o Literal e move para o reg WORK na ULA
- 		movwf   TRISB						; Aloca este valor literal no end do ref TRISB, setando todo o PORT_B como saida
+ 		movlw	B'00000000'					
+ 		movwf   TRISB						
  
- 		bank0								; Seleciona o banco 0
- 		
+ 		bank0								                                                   ; Select Bank0
+
  		movlw	B'00000011'					; Configura o Literal e move para o registrador Work
  		movwf   PORTB						; Carrega o Literal no PortB
  		
@@ -88,8 +90,8 @@ delay_1:
     
 delay_1_loop:
     decfsz COUNT, F        ; Decrementa o contador e salta se zero
-    goto delay_1_loop      ; Repete o loop se o contador não atingiu zero
-    return                 ; Retorna ao código principal
+    goto delay_1_loop      ; Repete o loop se o contador nÃ£o atingiu zero
+    return                 ; Retorna ao cÃ³digo principal
 ;---------------------------------------------------------------------------
  
  
